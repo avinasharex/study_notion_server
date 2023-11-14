@@ -13,5 +13,4 @@ const sectionSchema = new mongoose.Schema({
     ]
 },{timestamps: true})
 
-const Section = model("Section",sectionSchema)
-export default  Section
+export const Section = model("Section",sectionSchema)

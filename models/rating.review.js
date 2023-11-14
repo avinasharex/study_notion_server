@@ -17,5 +17,4 @@ const ratingAndReviewSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-const RatingAndReview = model("RatingAndReview",ratingAndReviewSchema)
-export default  RatingAndReview
+export const RatingAndReview = model("RatingAndReview",ratingAndReviewSchema)

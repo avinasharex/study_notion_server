@@ -17,5 +17,4 @@ const profileSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-const Profile = model("Profile",profileSchema)
-export default  Profile
+export const Profile = model("Profile",profileSchema)

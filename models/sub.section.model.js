@@ -15,5 +15,4 @@ const subSectionSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-const SubSection = model("SubSection",subSectionSchema)
-export default  SubSection
+export const SubSection = model("SubSection",subSectionSchema)

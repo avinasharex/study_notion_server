@@ -11,5 +11,4 @@ const courseProgressSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-const CourseProgress = model("CourseProgress",courseProgressSchema)
-export default  CourseProgress
+export const CourseProgress = model("CourseProgress",courseProgressSchema)
