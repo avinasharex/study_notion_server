@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
+import { model, Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -23,19 +23,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    acoountType: {
+    accountType: {
       type: String,
       enum: ["ADMIN", "STUDENT", "TEACHER"],
       required: true,
     },
     additionalDetails: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: "Profile",
     },
     courses: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Profile",
       },
     ],
@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     courseProgress: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "CourseProgress",
       },
     ],
@@ -84,4 +84,5 @@ userSchema.methods.isPasswordCorrect = async function(password){
      )
  }   
 
-export const User = model("User", userSchema);
+const User = model("User", userSchema);
+export default User;

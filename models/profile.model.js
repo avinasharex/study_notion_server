@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import {Schema,model} from "mongoose";
 
-const profileSchema = new mongoose.Schema({
+const profileSchema = new Schema({
     gender:{
         type: String
     },
@@ -17,4 +17,5 @@ const profileSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-export const Profile = model("Profile",profileSchema)
+const Profile = model("Profile",profileSchema)
+export default  Profile

@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import mailSender from "../utils/mailSender";
+import {Schema,model} from "mongoose";
+import mailSender from "../utils/mailSender.js";
 
-const otpSchema = new mongoose.Schema({
+const otpSchema = new Schema({
     email : {
         type: String,
         required: true
@@ -20,7 +20,7 @@ const otpSchema = new mongoose.Schema({
 async function sendVerificationEmail(email,otp){
     try {
         const mailResponse = await mailSender(email,"Verification email from Study Notion", otp)
-        console.log(mailResponse);
+        console.log("mail response",mailResponse);
     } catch (error) {
         console.log("Error occured while sending mail",error);
     }
@@ -31,4 +31,5 @@ otpSchema.pre("save", async function(next){
     next()
 })
 
-export const OTP = model("OTP",otpSchema)
+const OTP = model("OTP",otpSchema)
+export default OTP
