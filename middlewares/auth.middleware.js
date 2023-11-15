@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken"
 const isLoggedIn = (req,res,next)=>{
     const { token } = req.cookies
 
