@@ -20,7 +20,6 @@ const otpSchema = new Schema({
 async function sendVerificationEmail(email,otp){
     try {
         const mailResponse = await mailSender(email,"Verification email from Study Notion",`Your verification code is: ${otp}. This code is valid for 5 minutes.`)
-        console.log("mail response",mailResponse);
     } catch (error) {
         console.log("Error occured while sending mail",error);
     }

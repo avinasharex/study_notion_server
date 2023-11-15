@@ -35,6 +35,7 @@ const signUp = async (req, res, next) => {
       password,
       accountType,
       additionalDetails: profile,
+      approve: false,
       image: "https://github.com/avinasharex/auth/blob/main/model/userSchema.js"
     });
   
@@ -70,6 +71,53 @@ const signUp = async (req, res, next) => {
   }
 }
 
+const login = async(req,res,next)=>{
+  const {email,password} = req.body
+
+  try {
+    if(!email || !password){
+      return next(new ApiError("All field are required", 400))
+    }
+  
+    const user = await User.findOne({email}).select("+password")
+    if(!user || !(await user.isPasswordCorrect(password))){
+      return next(new ApiError("Email or password does not match", 400))
+    }
+    if(!user.approve){
+      return next(new ApiError("Please verify email", 400))
+    }
+      const token = await user.generateAccessToken();
+      user.password = undefined;
+  
+      res.cookie("token", token, cookieOption);
+      res.status(201).json({
+        success: true,
+        message: "User login successfully",
+        user,
+      });
+  } catch (error) {
+    return next(new ApiError(error.message, 400))
+  }
+  
+}
+
+const logout = async(req,res,next)=>{
+  try {
+    res.cookie("token", null, {
+      maxAge: 0,
+      httpOnly: true,
+      secure: false,
+    });
+  
+    res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    return next(new ApiError(error.message, 400))
+  }
+}
+
 const verifyEmail = async(req,res,next)=>{
   const {otp} = req.body
 
@@ -81,6 +129,17 @@ const verifyEmail = async(req,res,next)=>{
     if(otp !== createdOtp.otp){
       return next(new ApiError("OTP does not match", 400));
     }
+    // Update user's 'approve' field to true
+    const userEmail = createdOtp.email;
+    const user = await User.findOneAndUpdate(
+      { email: userEmail },
+      { $set: { approve: true } },
+      { new: true }
+    );
+
+    if (!user) {
+      return next(new ApiError("User not found", 404));
+    }
     res.status(201).json({
       success: true,
       message: "User registerd successfully",
@@ -91,4 +150,4 @@ const verifyEmail = async(req,res,next)=>{
   }
 }
 
-export { signUp, verifyEmail};
+export { signUp, verifyEmail, login, logout };
