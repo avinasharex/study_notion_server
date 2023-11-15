@@ -3,6 +3,7 @@ import Profile from "../models/profile.model.js";
 import User from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import otpGenerator from "otp-generator";
+import mailSender from "../utils/mailSender.js";
 
 const cookieOption = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -150,4 +151,6 @@ const verifyEmail = async(req,res,next)=>{
   }
 }
 
-export { signUp, verifyEmail, login, logout };
+
+
+export { signUp, verifyEmail, login, logout};
