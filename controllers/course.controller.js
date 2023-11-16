@@ -1,4 +1,3 @@
-import { text } from "express";
 import Course from "../models/course.model";
 import ApiError from "../utils/ApiError";
 import { uploadOnCloudinar } from "../utils/cloudinary";
@@ -72,6 +71,7 @@ const createCourse = async (req, res, next) => {
       }
       await course.save();
 
+    //add new created course to instructor
       await User.findByIdAndUpdate(
         {_id: req.user._id},
         {
@@ -90,4 +90,17 @@ const createCourse = async (req, res, next) => {
   }
 };
 
-export { createCourse };
+const getAllCourses = async(req,res,next)=>{
+    const course = await User.find({}).select("courses")
+    if(!course){
+        new ApiError("Course does not exist", 400)   
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Course fetched successfully",
+        fetchCourse: course
+      });
+}
+
+export { createCourse, getAllCourses };
