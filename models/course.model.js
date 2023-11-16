@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import {Schema, model} from "mongoose";
 
-const courseSchema = new mongoose.Schema({
+const courseSchema = new Schema({
     courseName: {
         type: String,
         trim: true
@@ -10,7 +10,7 @@ const courseSchema = new mongoose.Schema({
         trim: true
     },
     Instructor: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
@@ -19,13 +19,13 @@ const courseSchema = new mongoose.Schema({
     },
     courseContent: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Section"
         }
     ],
     ratingAndReviews: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "RatingAndReview"
         }
     ],
@@ -36,14 +36,15 @@ const courseSchema = new mongoose.Schema({
         type: String
     },
     tag: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Tag"
     },
     studentsEnrolled: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: "User"
     }]
 },{timestamps: true})
 
-export const Course = model("Course",courseSchema)
+const Course = model("Course",courseSchema)
+export default Course
