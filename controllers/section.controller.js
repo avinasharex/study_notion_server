@@ -1,36 +1,60 @@
-import Course from "../models/course.model"
-import Section from "../models/section"
-import ApiError from "../utils/ApiError"
+import Course from "../models/course.model";
+import Section from "../models/section";
+import ApiError from "../utils/ApiError";
 
-const createSection = async(req,res,next)=>{
-   try {
-    const {sectionName,CourseId} = req.body
-    if(!sectionName || !CourseId){
-        return next(new ApiError("All fields are required",400))
+const createSection = async (req, res, next) => {
+  try {
+    const { sectionName, CourseId } = req.body;
+    if (!sectionName || !CourseId) {
+      return next(new ApiError("All fields are required", 400));
     }
 
     const section = await Section.create({
-        sectionName
-    })
-    if(!section){
-        return next(new ApiError("Section creation failed",400))
+      sectionName,
+    });
+    if (!section) {
+      return next(new ApiError("Section creation failed", 400));
     }
 
-    await Course.findByIdAndUpdate(CourseId,{
+    await Course.findByIdAndUpdate(
+      CourseId,
+      {
         $push: {
-            courseContent: sectionName._id
-        }
-    },
-    {new: true})
+          courseContent: sectionName._id,
+        },
+      },
+      { new: true }
+    );
 
-    await section.save()
+    await section.save();
     return res.status(201).json({
-        success: true,
-        message: "Section created successfully"
-    })
-   } catch (error) {
-    return next(new ApiError(error.message,500))
-   }
-}
+      success: true,
+      message: "Section created successfully",
+    });
+  } catch (error) {
+    return next(new ApiError(error.message, 500));
+  }
+};
 
-export {createSection}
+const updateSection = async (req, res, next) => {
+  try {
+    const { sectionName, sectionId } = req.body;
+    if (!sectionName || !sectionId) {
+      return next(new ApiError("All fields are required", 400));
+    }
+
+    const section = await Section.findByIdAndUpdate(sectionId,{
+        sectionName
+    }, {new: true})
+    await section.save()
+
+    return res.status(200).json({
+        success: true,
+        message: "Section updated successfully",
+      });
+  } catch (error) {
+    return next(new ApiError(error.message, 500));
+  }
+};
+
+export { createSection, updateSection };
