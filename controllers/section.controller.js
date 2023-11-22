@@ -57,4 +57,22 @@ const updateSection = async (req, res, next) => {
   }
 };
 
-export { createSection, updateSection };
+const deleteSection = async(req,res,next)=>{
+    try {
+        const {sectionId} = req.params
+        if(!sectionId){
+            return next(new ApiError("Section ID is invalid", 400));
+        }
+        const section = await Section.findByIdAndDelete(sectionId)
+        await section.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Section deleted successfully",
+          });
+    } catch (error) {
+        return next(new ApiError(error.message, 500));  
+    }
+}
+
+export { createSection, updateSection, deleteSection };
