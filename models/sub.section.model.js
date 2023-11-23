@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import {Schema,model} from "mongoose";
 
-const subSectionSchema = new mongoose.Schema({
+const subSectionSchema = new Schema({
     title: {
         type: String
     },
@@ -15,4 +15,5 @@ const subSectionSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-export const SubSection = model("SubSection",subSectionSchema)
+const SubSection = model("SubSection",subSectionSchema)
+export default SubSection
