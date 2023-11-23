@@ -67,4 +67,23 @@ const updateSubSection = async (req, res, next) => {
   }
 };
 
-export { createSubSection, updateSubSection };
+const deleteSubSection = async(req,res,next)=>{
+  try {
+    const {subSectionId} = req.params
+    if(!subSectionId){
+      return next(new ApiError("subSectionId is required", 400));
+    }
+    const subSection = await SubSection.findByIdAndDelete(subSectionId)
+    if(!subSection){
+      return next(new ApiError("subSection deletion failed, please try again", 500));
+    }
+    return res.status(200).json({
+      success: true,
+      message: "SubSection deleted successfully",
+    });
+  } catch (error) {
+    return next(new ApiError(error.message, 500));
+  }
+}
+
+export { createSubSection, updateSubSection, deleteSubSection };
