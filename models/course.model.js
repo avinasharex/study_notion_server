@@ -36,8 +36,12 @@ const courseSchema = new Schema({
         type: String
     },
     tag: {
+        type: String,
+        required: true
+    },
+    category:{
         type: Schema.Types.ObjectId,
-        ref: "Tag"
+        ref: "Category"
     },
     studentsEnrolled: [{
         type: Schema.Types.ObjectId,
