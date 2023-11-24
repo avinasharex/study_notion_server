@@ -30,4 +30,23 @@ const updateProfile = async(req,res,next)=>{
     }
 }
 
-export {updateProfile}
+const deleteAccount = async(req,res,next)=>{
+    try {
+        const userId = req.user.id
+        const userDetails = await User.findById(userId)
+        if(!userDetails){
+            return next(new ApiError("User not found",400)) 
+        }
+        await Profile.findByIdAndDelete({_id: userDetails.additionalDetails})
+        await User.findByIdAndDelete(id)
+        
+        return res.status(200).json({
+            success: true,
+            message: "Profile deleted successfully",
+        })
+    } catch (error) {
+        return next(new ApiError(error.message,500))
+    }
+}
+
+export {updateProfile, deleteAccount}
