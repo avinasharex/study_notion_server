@@ -2,6 +2,7 @@ import razorpayInstance from "../utils/Razorpay";
 import Course from "../models/course.model";
 import User from "../models/user.model";
 import { ApiError } from "../utils/ApiError";
+import crypto from "crypto"
 
 const createPayment = async (req, res, next) => {
   const courseId = req.params;
@@ -42,4 +43,34 @@ const createPayment = async (req, res, next) => {
   }
 };
 
-export {createPayment}
+const verifyPayment = async(req,res,next)=>{
+    const webHookSecret = "1323134"
+    const singature = req.headers("x-razorpay-signature")
+    const secret = crypto.createHmac("sha256",webHookSecret).update(JSON.stringify(req.body)).digest("hex")
+    if(singature !== secret){
+        return next(new ApiError("Payment not verified", 400));
+    }
+    const {userId,courseId} = req.payload.payment.entity.notes
+    try {
+        const enrolledCourse = await Course.findByIdAndUpdate(courseId,{
+            $push: {studentsEnrolled: userId}
+        }, {new: true})
+        if(!enrolledCourse){
+            return next(new ApiError("Course not found", 400));
+        }
+        const enrolledStudent = await User.findOneAndUpdate(userId,{
+            $push:{courses: courseId}
+        },{new:true})
+
+        // TODO: send mail to student on successful course purchased
+
+        return res.status(200).json({
+            success: true,
+            message: "Course purchased successfully"
+        })
+    } catch (error) {
+        return next(new ApiError(error.message, 500));  
+    }
+}
+
+export {createPayment, verifyPayment}

@@ -43,6 +43,10 @@ const courseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Category"
     },
+    status:{
+        type: String,
+        enum: ["DRAFT","PUBLISHED"]
+    },
     studentsEnrolled: [{
         type: Schema.Types.ObjectId,
         required: true,
