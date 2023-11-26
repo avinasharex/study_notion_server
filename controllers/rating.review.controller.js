@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import Course from "../models/course.model";
 import RatingAndReview from "../models/rating.review";
 import ApiError from "../utils/ApiError";
@@ -57,21 +58,45 @@ const getAverageRating = async (req, res, next) => {
         $group: { _id: null, averageRating: { $avg: "$rating" } },
       },
     ]);
-    if(result.length>0){
-        return res.status(200).json({
-            success: true,
-            averageRating: result[0].averageRating 
-        })
+    if (result.length > 0) {
+      return res.status(200).json({
+        success: true,
+        averageRating: result[0].averageRating,
+      });
     }
 
     return res.status(200).json({
-        success: true,
-        message: "Rating not given by user",
-        averageRating: 0
-    })
+      success: true,
+      message: "Rating not given by user",
+      averageRating: 0,
+    });
   } catch (error) {
     return next(new ApiError(error.message, 500));
   }
 };
 
-export { createRatingReview, getAverageRating };
+const getAllRatingReview = async (req, res, next) => {
+  try {
+    const allReviews = await RatingAndReview.find({})
+      .sort({ rating: "desc" })
+      .populate({
+        path: "user",
+        select: "firstName lastName email image",
+      })
+      .populate({
+        path: "course",
+        select: "courseName",
+      })
+      .exec();
+
+      return res.status(200).json({
+        success: true,
+        message: "All rating and reviews fetched successfull",
+        rating: allReviews
+      })
+  } catch (error) {
+    return next(new ApiError(error.message, 500));
+  }
+};
+
+export { createRatingReview, getAverageRating, getAllRatingReview };

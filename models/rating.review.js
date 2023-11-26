@@ -8,7 +8,8 @@ const ratingAndReviewSchema = new Schema({
     },
     course: {
         type: Schema.Types.ObjectId,
-        ref: "Course"
+        ref: "Course",
+        index: true
     },
     rating: {
         type: Number,
