@@ -71,15 +71,16 @@ const createCourse = async (req, res, next) => {
       }
       await course.save();
 
-    //add new created course to instructor
+      //add new created course to instructor
       await User.findByIdAndUpdate(
-        {_id: req.user._id},
+        { _id: req.user._id },
         {
-            $push: {
-                courses: course._id
-            }
+          $push: {
+            courses: course._id,
+          },
         },
-        {new: true})
+        { new: true }
+      );
       return res.status(200).json({
         success: true,
         message: "Course created successfully",
@@ -90,17 +91,50 @@ const createCourse = async (req, res, next) => {
   }
 };
 
-const getAllCourses = async(req,res,next)=>{
-    const course = await User.find({}).select("courses")
-    if(!course){
-        new ApiError("Course does not exist", 400)   
-    }
+const getAllCourses = async (req, res, next) => {
+  const course = await User.find({}).select("courses");
+  if (!course) {
+   return next (new ApiError("Course does not exist", 400));
+  }
 
-    return res.status(200).json({
+  return res.status(200).json({
+    success: true,
+    message: "Course fetched successfully",
+    fetchCourse: course,
+  });
+};
+
+const getCourseDetails = async (req, res, next) => {
+  const { courseId } = req.body;
+  try {
+    const courseDetails = await Course.find({ courseId })
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails",
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({
+        path: "courseConten",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec()
+
+      if(!courseDetails){
+        return next (new ApiError(`Could not found course with ID ${courseId}`, 400));
+      }
+      return res.status(200).json({
         success: true,
-        message: "Course fetched successfully",
-        fetchCourse: course
+        message: "Course details fetched successfully",
+        data: courseDetails
       });
-}
+  } catch (error) {
+    return next(new ApiError(error.message, 400));
+  }
+};
 
-export { createCourse, getAllCourses };
+export { createCourse, getAllCourses, getCourseDetails };
