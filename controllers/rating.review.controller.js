@@ -25,19 +25,53 @@ const createRatingReview = async (req, res, next) => {
       course: courseId,
     });
 
-    await Course.findByIdAndUpdate(courseId,{
+    await Course.findByIdAndUpdate(
+      courseId,
+      {
         $push: {
-            ratingAndReviews: ratingAndReviews._id
-        }
-    },{new: true})
+          ratingAndReviews: ratingAndReviews._id,
+        },
+      },
+      { new: true }
+    );
 
     return res.status(201).json({
+      success: true,
+      message: "Rating and Review created successfully",
+    });
+  } catch (error) {
+    return next(new ApiError(error.message, 500));
+  }
+};
+
+const getAverageRating = async (req, res, next) => {
+  const { courseId } = req.params;
+  try {
+    const result = await RatingAndReview.aggregate([
+      {
+        $match: {
+          course: courseId,
+        },
+      },
+      {
+        $group: { _id: null, averageRating: { $avg: "$rating" } },
+      },
+    ]);
+    if(result.length>0){
+        return res.status(200).json({
+            success: true,
+            averageRating: result[0].averageRating 
+        })
+    }
+
+    return res.status(200).json({
         success: true,
-        message: "Rating and Review created successfully"
+        message: "Rating not given by user",
+        averageRating: 0
     })
   } catch (error) {
     return next(new ApiError(error.message, 500));
   }
 };
 
-export {createRatingReview}
+export { createRatingReview, getAverageRating };
