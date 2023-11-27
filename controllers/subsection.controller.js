@@ -1,7 +1,7 @@
-import Section from "../models/section";
-import SubSection from "../models/sub.section.model";
-import ApiError from "../utils/ApiError";
-import { uploadOnCloudinar } from "../utils/cloudinary";
+import Section from "../models/section.js";
+import SubSection from "../models/sub.section.model.js";
+import ApiError from "../utils/ApiError.js";
+import { uploadOnCloudinar } from "../utils/cloudinary.js";
 
 const createSubSection = async (req, res, next) => {
   try {

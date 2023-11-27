@@ -1,6 +1,6 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import crypto from "crypto"
-import ApiError from "../utils/ApiError";
+import ApiError from "../utils/ApiError.js";
 
 const resetPasswordToken = async (req, res, next) => {
     const { email } = req.body;

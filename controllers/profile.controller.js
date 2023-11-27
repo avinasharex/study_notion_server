@@ -1,6 +1,6 @@
-import User from "../models/user.model"
-import Profile from "../models/profile.model"
-import ApiError from "../utils/ApiError"
+import User from "../models/user.model.js"
+import Profile from "../models/profile.model.js"
+import ApiError from "../utils/ApiError.js"
 
 const updateProfile = async(req,res,next)=>{
     try {

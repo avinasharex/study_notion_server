@@ -1,6 +1,6 @@
-import Course from "../models/course.model";
-import Section from "../models/section";
-import ApiError from "../utils/ApiError";
+import Course from "../models/course.model.js";
+import Section from "../models/section.js";
+import ApiError from "../utils/ApiError.js";
 
 const createSection = async (req, res, next) => {
   try {

@@ -1,5 +1,5 @@
-import Tag from "../models/tag.model";
-import ApiError from "../utils/ApiError";
+import Tag from "../models/tag.model.js";
+import ApiError from "../utils/ApiError.js";
 
 const createTag = async (req, res, next) => {
   try {

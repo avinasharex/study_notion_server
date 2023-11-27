@@ -1,8 +1,8 @@
-import Course from "../models/course.model";
-import ApiError from "../utils/ApiError";
-import { uploadOnCloudinar } from "../utils/cloudinary";
-import Tag from "../models/tag.model";
-import User from "../models/user.model";
+import Course from "../models/course.model.js";
+import ApiError from "../utils/ApiError.js";
+import { uploadOnCloudinar } from "../utils/cloudinary.js";
+import Tag from "../models/tag.model.js";
+import User from "../models/user.model.js";
 
 const createCourse = async (req, res, next) => {
   try {

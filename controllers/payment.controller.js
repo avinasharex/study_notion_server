@@ -1,7 +1,7 @@
-import razorpayInstance from "../utils/Razorpay";
-import Course from "../models/course.model";
-import User from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
+import razorpayInstance from "../utils/Razorpay.js";
+import Course from "../models/course.model.js";
+import User from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
 import crypto from "crypto"
 
 const createPayment = async (req, res, next) => {

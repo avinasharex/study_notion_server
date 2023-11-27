@@ -1,7 +1,6 @@
-import { populate } from "dotenv";
-import Course from "../models/course.model";
-import RatingAndReview from "../models/rating.review";
-import ApiError from "../utils/ApiError";
+import Course from "../models/course.model.js";
+import RatingAndReview from "../models/rating.review.js";
+import ApiError from "../utils/ApiError.js";
 
 const createRatingReview = async (req, res, next) => {
   const userId = req.user.id;
