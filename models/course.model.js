@@ -37,11 +37,11 @@ const courseSchema = new Schema({
     },
     tag: {
         type: String,
-        required: true
     },
     category:{
         type: Schema.Types.ObjectId,
-        ref: "Category"
+        ref: "Category",
+        required: true
     },
     status:{
         type: String,

@@ -9,7 +9,7 @@ import { createSubSection, deleteSubSection, updateSubSection } from "../control
 const router = Router()
 
 /*-----------------Course---------------------------- */
-router.get("/course",isLoggedIn,authorizedRoles("TEACHER"),getAllCourses)
+router.get("/",isLoggedIn,authorizedRoles("TEACHER"),getAllCourses)
 router.post("/create-course",isLoggedIn,authorizedRoles("TEACHER"),createCourse)
 router.get("/details-course",isLoggedIn,authorizedRoles("TEACHER"),getCourseDetails)
 

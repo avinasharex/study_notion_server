@@ -76,7 +76,7 @@ userSchema.methods = {
   generateAccessToken: function () {
     return JWT.sign(
       {
-        _id: this._id,
+        id: this._id,
         email: this.email,
         fullName: this.fullName,
         lastName: this.lastName,

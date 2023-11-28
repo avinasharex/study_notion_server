@@ -126,14 +126,13 @@ const verifyEmail = async(req,res,next)=>{
     if(!otp){
       return next(new ApiError("OTP is required", 400));
     }
-    const createdOtp = await OTP.findOne({otp})
-    if(otp !== createdOtp.otp){
+    const dbOtp = await OTP.findOne({otp})
+    if(!dbOtp){
       return next(new ApiError("OTP does not match", 400));
     }
     // Update user's 'approve' field to true
-    const userEmail = createdOtp.email;
-    const user = await User.findOneAndUpdate(
-      { email: userEmail },
+    const userEmail = dbOtp.email;
+    const user = await User.findOneAndUpdate({email: userEmail},
       { $set: { approve: true } },
       { new: true }
     );
@@ -144,7 +143,6 @@ const verifyEmail = async(req,res,next)=>{
     res.status(201).json({
       success: true,
       message: "User registerd successfully",
-      createdOtp
     });
   } catch (error) {
     return next(new ApiError(error.message, 400));

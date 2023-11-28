@@ -8,7 +8,7 @@ const updateProfile = async(req,res,next)=>{
         if(!contactNumber || !gender){
             return next(new ApiError("All fields are required",400))
         }
-        const userId = req.user.userId
+        const userId = req.user.id
         const userDetails = await User.findById(userId)
         const profileId = userDetails.additionalDetails
         const profileDetails = await  Profile.findById(profileId)

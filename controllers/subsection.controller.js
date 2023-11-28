@@ -1,7 +1,7 @@
 import Section from "../models/section.js";
 import SubSection from "../models/sub.section.model.js";
 import ApiError from "../utils/ApiError.js";
-import { uploadOnCloudinar } from "../utils/cloudinary.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createSubSection = async (req, res, next) => {
   try {
@@ -10,7 +10,7 @@ const createSubSection = async (req, res, next) => {
       return next(new ApiError("All fields are required", 400));
     }
     const videoLocalPath = req.files?.videoUrl[0]?.path;
-    const video = uploadOnCloudinar(videoLocalPath);
+    const video = uploadOnCloudinary(videoLocalPath);
     if (!video) {
       return next(new ApiError("Video fields is required", 400));
     }
