@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import crypto from "crypto"
+import mailSender from "../utils/mailSender.js"
 import ApiError from "../utils/ApiError.js";
 
 const resetPasswordToken = async (req, res, next) => {
@@ -111,7 +112,6 @@ const resetPasswordToken = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Password changed successfully!",
-      validPassword: isValidPassword,
     });
   };  
 

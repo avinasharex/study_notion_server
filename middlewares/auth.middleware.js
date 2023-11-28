@@ -1,11 +1,12 @@
 import doten from "dotenv"
 doten.config()
 import jwt from "jsonwebtoken"
+import ApiError from "../utils/ApiError.js"
 const isLoggedIn = (req,res,next)=>{
     const { token } = req.cookies
 
     if (!token) {
-        return next(new AppError("Unauthenticated please login again", 400))
+        return next(new ApiError("Unauthenticated please login again", 400))
     }
     const userDetails = jwt.verify(token, "avinasharex")
 

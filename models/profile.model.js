@@ -5,7 +5,7 @@ const profileSchema = new Schema({
         type: String
     },
     dateOfBirth: {
-        type: String
+        type: Date
     },
     about:{
         type: String,
