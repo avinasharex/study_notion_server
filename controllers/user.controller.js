@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import otpGenerator from "otp-generator";
 import mailSender from "../utils/mailSender.js";
+import clearCookie from "../utils/clearCookie.js";
 
 const cookieOption = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -104,11 +105,7 @@ const login = async(req,res,next)=>{
 
 const logout = async(req,res,next)=>{
   try {
-    res.cookie("token", null, {
-      maxAge: 0,
-      httpOnly: true,
-      secure: false,
-    });
+    clearCookie()
   
     res.status(200).json({
       success: true,

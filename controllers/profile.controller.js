@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Profile from "../models/profile.model.js";
 import ApiError from "../utils/ApiError.js";
+import clearCookie from "../utils/clearCookie.js";
 
 const updateProfile = async (req, res, next) => {
   try {
@@ -43,11 +44,7 @@ const deleteAccount = async (req, res, next) => {
     await Profile.findByIdAndDelete({ _id: userDetails.additionalDetails });
     await User.findByIdAndDelete(userId);
 
-    res.cookie("token", null, {
-        maxAge: 0,
-        httpOnly: true,
-        secure: false,
-      });
+    clearCookie()
 
     return res.status(200).json({
       success: true,

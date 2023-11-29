@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import crypto from "crypto"
 import mailSender from "../utils/mailSender.js"
 import ApiError from "../utils/ApiError.js";
+import clearCookie from "../utils/clearCookie.js";
 
 const resetPasswordToken = async (req, res, next) => {
     const { email } = req.body;
@@ -106,6 +107,8 @@ const resetPasswordToken = async (req, res, next) => {
     user.password = newPassword;
   
     await user.save();
+
+    clearCookie()
   
     user.password = undefined;
   
