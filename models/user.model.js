@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     accountType: {
       type: String,
-      enum: ["ADMIN", "STUDENT", "TEACHER"],
+      enum: ["ADMIN", "STUDENT", "INSTRUCTOR"],
       required: true,
     },
     additionalDetails: {

@@ -9,22 +9,22 @@ import { createSubSection, deleteSubSection, updateSubSection } from "../control
 const router = Router()
 
 /*-----------------Course---------------------------- */
-router.get("/",isLoggedIn,authorizedRoles("TEACHER"),getAllCourses)
-router.post("/create-course",isLoggedIn,authorizedRoles("TEACHER"),createCourse)
-router.get("/details-course",isLoggedIn,authorizedRoles("TEACHER"),getCourseDetails)
+router.get("/",isLoggedIn,authorizedRoles("INSTRUCTOR"),getAllCourses)
+router.post("/create-course",isLoggedIn,authorizedRoles("INSTRUCTOR"),createCourse)
+router.get("/details-course",isLoggedIn,authorizedRoles("INSTRUCTOR"),getCourseDetails)
 
 /*-----------------Section---------------------------- */
-router.post("/create-section",isLoggedIn,authorizedRoles("TEACHER"),createSection)
-router.patch("/update-section",isLoggedIn,authorizedRoles("TEACHER"),createSection)
-router.delete("/delete-section",isLoggedIn,authorizedRoles("TEACHER"),deleteSection)
+router.post("/create-section",isLoggedIn,authorizedRoles("INSTRUCTOR"),createSection)
+router.patch("/update-section",isLoggedIn,authorizedRoles("INSTRUCTOR"),createSection)
+router.delete("/delete-section",isLoggedIn,authorizedRoles("INSTRUCTOR"),deleteSection)
 
 /*-----------------Sub section---------------------------- */
-router.post("/create-subsection",isLoggedIn,authorizedRoles("TEACHER"),createSubSection)
-router.patch("/update-subsection",isLoggedIn,authorizedRoles("TEACHER"),updateSubSection)
-router.delete("/delete-subsection",isLoggedIn,authorizedRoles("TEACHER"),deleteSubSection)
+router.post("/create-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),createSubSection)
+router.patch("/update-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),updateSubSection)
+router.delete("/delete-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),deleteSubSection)
 
 /*-----------------Tag---------------------------- */
-router.post("/create-tag",isLoggedIn,authorizedRoles("TEACHER"),createTag)
-router.get("/tag",isLoggedIn,authorizedRoles("TEACHER"),getAllTag)
+router.post("/create-tag",isLoggedIn,authorizedRoles("INSTRUCTOR"),createTag)
+router.get("/tag",isLoggedIn,authorizedRoles("INSTRUCTOR"),getAllTag)
 
 export default router

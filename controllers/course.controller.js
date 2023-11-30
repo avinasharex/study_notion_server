@@ -10,11 +10,8 @@ const createCourse = async (req, res, next) => {
       courseDescription,
       Instructor,
       whatYouWillLearn,
-      courseContent,
-      ratingAndReviews,
       price,
       tag,
-      studentsEnrolled,
     } = req.body;
 
     if (
@@ -22,10 +19,9 @@ const createCourse = async (req, res, next) => {
       !courseDescription ||
       !Instructor ||
       !whatYouWillLearn ||
-      !courseContent ||
       !price ||
       !thumbnail ||
-      !studentsEnrolled
+      !tag
     ) {
       return next(new ApiError("All fields are required", 400));
     }
@@ -43,12 +39,9 @@ const createCourse = async (req, res, next) => {
       courseDescription,
       Instructor: req.user._id,
       whatYouWillLearn,
-      courseContent,
-      ratingAndReviews,
       price,
       thumbnail: thumbnail.url,
       tag: tagDetails._id,
-      studentsEnrolled,
     });
 
     if (!course) {
@@ -71,6 +64,7 @@ const createCourse = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: "Course created successfully",
+        course
       });
   } catch (error) {
     return next(new ApiError(error.message, 400));
