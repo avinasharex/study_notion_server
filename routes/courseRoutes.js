@@ -5,6 +5,7 @@ import { authorizedRoles } from "../middlewares/auth.middleware.js"
 import { createTag, getAllTag } from "../controllers/tag.controller.js"
 import { createSection, deleteSection } from "../controllers/section.controller.js"
 import { createSubSection, deleteSubSection, updateSubSection } from "../controllers/subsection.controller.js"
+import { createCategory, getAllCategory } from "../controllers/category.controller.js"
 
 const router = Router()
 
@@ -26,5 +27,9 @@ router.delete("/delete-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),dele
 /*-----------------Tag---------------------------- */
 router.post("/create-tag",isLoggedIn,authorizedRoles("INSTRUCTOR"),createTag)
 router.get("/tag",isLoggedIn,authorizedRoles("INSTRUCTOR"),getAllTag)
+
+/*-----------------Category---------------------------- */
+router.post("/create-category",isLoggedIn,authorizedRoles("ADMIN"),createCategory)
+router.get("/get-category",isLoggedIn,authorizedRoles("ADMIN"),getAllCategory)
 
 export default router

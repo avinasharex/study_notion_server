@@ -17,10 +17,9 @@ const isLoggedIn = (req,res,next)=>{
 }
 
 const authorizedRoles = (...roles) => (req, res, next) => {
-    const currentUserRole = req.user.role
-
+    const currentUserRole = req.user.accountType
     if (!roles.includes(currentUserRole)) {
-        return next(new AppError("You do not permssion to access ", 400))
+        return next(new ApiError("You do not permssion to access ", 400))
     }
     next();
 }
