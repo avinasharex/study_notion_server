@@ -44,7 +44,7 @@ const deleteAccount = async (req, res, next) => {
     await Profile.findByIdAndDelete({ _id: userDetails.additionalDetails });
     await User.findByIdAndDelete(userId);
 
-    clearCookie()
+    clearCookie(res)
 
     return res.status(200).json({
       success: true,

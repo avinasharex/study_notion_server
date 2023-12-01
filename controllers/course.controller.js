@@ -2,46 +2,47 @@ import Course from "../models/course.model.js";
 import ApiError from "../utils/ApiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import User from "../models/user.model.js";
+import mongoose from "mongoose";
 
 const createCourse = async (req, res, next) => {
+  const {
+    courseName,
+    courseDescription,
+    whatYouWillLearn,
+    price,
+    tag,
+    category,
+  } = req.body;
+  const userId = req.user.id
   try {
-    const {
-      courseName,
-      courseDescription,
-      Instructor,
-      whatYouWillLearn,
-      price,
-      tag,
-    } = req.body;
-
     if (
-      !courseName ||
-      !courseDescription ||
-      !Instructor ||
-      !whatYouWillLearn ||
-      !price ||
-      !thumbnail ||
-      !tag
+      !courseName || !courseDescription || !whatYouWillLearn || !price || !tag || !category
     ) {
       return next(new ApiError("All fields are required", 400));
     }
-    const thumbnailLocalPath = req.files?.thumbnail[0]?.path
-    if(!thumbnailLocalPath){
-      return next(new ApiError("Thumbnail is required", 400));
+
+    const userDetails = await User.findById(userId)
+    const thumbnailLocalPath = req.file.path
+    console.log(thumbnailLocalPath);
+    if (!thumbnailLocalPath) {
+      return next(new ApiError("-...>>Thumbnail is required", 400));
     }
 
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
-    if(!thumbnail){
+    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+ 
+    if (!thumbnail) {
       return next(new ApiError("Thumbnail is required", 400));
     }
+ 
     const course = await Course.create({
       courseName,
       courseDescription,
-      Instructor: req.user._id,
+      Instructor: userDetails._id,
       whatYouWillLearn,
       price,
+      category: new mongoose.Types.ObjectId(category),
       thumbnail: thumbnail.url,
-      tag: tagDetails._id,
+      tag
     });
 
     if (!course) {
@@ -49,32 +50,32 @@ const createCourse = async (req, res, next) => {
         new ApiError("Course creation failed please try again later", 400)
       );
     }
-      await course.save();
+    await course.save();
 
-      //add new created course to instructor
-      await User.findByIdAndUpdate(
-        { _id: req.user._id },
-        {
-          $push: {
-            courses: course._id,
-          },
+    //add new created course to instructor
+    await User.findByIdAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: {
+          courses: course._id,
         },
-        { new: true }
-      );
-      return res.status(200).json({
-        success: true,
-        message: "Course created successfully",
-        course
-      });
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Course created successfully",
+      course,
+    });
   } catch (error) {
     return next(new ApiError(error.message, 400));
   }
 };
 
 const getAllCourses = async (req, res, next) => {
-  const course = await User.find({}).select("courses");
+  const course = await Course.find({});
   if (!course) {
-   return next (new ApiError("Course does not exist", 400));
+    return next(new ApiError("Course does not exist", 400));
   }
 
   return res.status(200).json({
@@ -89,7 +90,7 @@ const getCourseDetails = async (req, res, next) => {
   try {
     const courseDetails = await Course.find({ courseId })
       .populate({
-        path: "instructor",
+        path: "Instructor",
         populate: {
           path: "additionalDetails",
         },
@@ -97,21 +98,23 @@ const getCourseDetails = async (req, res, next) => {
       .populate("category")
       .populate("ratingAndReviews")
       .populate({
-        path: "courseConten",
+        path: "courseContent",
         populate: {
           path: "subSection",
         },
       })
-      .exec()
+      .exec();
 
-      if(!courseDetails){
-        return next (new ApiError(`Could not found course with ID ${courseId}`, 400));
-      }
-      return res.status(200).json({
-        success: true,
-        message: "Course details fetched successfully",
-        data: courseDetails
-      });
+    if (!courseDetails) {
+      return next(
+        new ApiError(`Could not found course with ID ${courseId}`, 400)
+      );
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Course details fetched successfully",
+      data: courseDetails,
+    });
   } catch (error) {
     return next(new ApiError(error.message, 400));
   }

@@ -5,12 +5,14 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createSubSection = async (req, res, next) => {
   try {
-    const { sectionId, title, timeDuration, description } = req.body;
+    const { sectionId, title, timeDuration, description } = req.body
+
     if (!sectionId || !title || !timeDuration || !description) {
       return next(new ApiError("All fields are required", 400));
     }
-    const videoLocalPath = req.files?.videoUrl[0]?.path;
-    const video = uploadOnCloudinary(videoLocalPath);
+ 
+    const videoLocalPath = req.file.path
+    const video = await uploadOnCloudinary(videoLocalPath);
     if (!video) {
       return next(new ApiError("Video fields is required", 400));
     }
@@ -21,8 +23,7 @@ const createSubSection = async (req, res, next) => {
       videoUrl: video.url,
     });
 
-    const updatedSection = await Section.findByIdAndUpdate(
-      { sectionId },
+    const updatedSection = await Section.findByIdAndUpdate(sectionId,
       {
         $push: { subSection: subSection._id },
       },

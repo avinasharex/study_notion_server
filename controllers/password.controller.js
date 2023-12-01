@@ -108,7 +108,7 @@ const resetPasswordToken = async (req, res, next) => {
   
     await user.save();
 
-    clearCookie()
+    clearCookie(res)
   
     user.password = undefined;
   

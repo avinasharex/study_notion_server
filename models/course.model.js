@@ -15,7 +15,8 @@ const courseSchema = new Schema({
         required: true
     },
     whatYouWillLearn: {
-        type: String
+        type: String,
+        required:true
     },
     courseContent: [
         {
@@ -30,13 +31,16 @@ const courseSchema = new Schema({
         }
     ],
     price: {
-        type: Number
+        type: Number,
+        required: true
     },
     thumbnail: {
-        type: String
+        type: String,
+        required: true
     },
     tag: {
         type: String,
+        required: true
     },
     category:{
         type: Schema.Types.ObjectId,
@@ -49,7 +53,6 @@ const courseSchema = new Schema({
     },
     studentsEnrolled: [{
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "User"
     }]
 },{timestamps: true})

@@ -105,8 +105,8 @@ const login = async(req,res,next)=>{
 
 const logout = async(req,res,next)=>{
   try {
-    clearCookie()
-  
+    clearCookie(res)
+
     res.status(200).json({
       success: true,
       message: "User logged out successfully",
