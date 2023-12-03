@@ -22,8 +22,8 @@ router.delete("/delete-section",isLoggedIn,authorizedRoles("INSTRUCTOR"),deleteS
 
 /*-----------------Sub section---------------------------- */
 router.post("/create-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),upload.single("videoUrl"),createSubSection)
-router.patch("/update-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),updateSubSection)
-router.delete("/delete-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),deleteSubSection)
+router.put("/update-subsection",isLoggedIn,authorizedRoles("INSTRUCTOR"),upload.single("videoUrl"),updateSubSection)
+router.delete("/delete-subsection/:subSectionId",isLoggedIn,authorizedRoles("INSTRUCTOR"),deleteSubSection)
 
 /*-----------------Tag---------------------------- */
 router.post("/create-tag",isLoggedIn,authorizedRoles("INSTRUCTOR"),createTag)

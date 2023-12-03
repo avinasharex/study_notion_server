@@ -5,11 +5,12 @@ import { isLoggedIn } from "../middlewares/auth.middleware.js"
 import { login, logout, signUp, verifyEmail } from "../controllers/user.controller.js"
 import { createRatingReview } from "../controllers/rating.review.controller.js"
 import { authorizedRoles } from "../middlewares/auth.middleware.js"
+import { upload } from "../middlewares/multer.middleware.js"
 
 const router = Router()
 
 /*-----------------User---------------------------- */
-router.post("/signup",signUp)
+router.post("/signup",upload.single("image"),signUp)
 router.post("/verify-email",verifyEmail)
 router.post("/login",login)
 router.get("/logout",logout)

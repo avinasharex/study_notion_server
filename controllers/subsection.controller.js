@@ -46,19 +46,21 @@ const updateSubSection = async (req, res, next) => {
     if (!subSectionId || !title || !timeDuration || !description) {
       return next(new ApiError("All fields are required", 400));
     }
-
-    const videoLocalPath = req.files?.videoUrl[0]?.path;
-    const video = uploadOnCloudinar(videoLocalPath);
-    if (!video) {
-      return next(new ApiError("Video fields is required", 400));
-    }
-
-    const updatedSubSection = await SubSection.findByIdAndUpdate(subSectionId, {
+    const updatedSubSectionData = {
       title,
       description,
-      timeDuration,
-      videoUrl: video.url
-    });
+      timeDuration
+    };
+    if(req.file){
+      const videoLocalPath = req.file.path
+      const video = await uploadOnCloudinary(videoLocalPath);
+      if (!video) {
+        return next(new ApiError("Video fields is required", 400));
+      }
+      updatedSubSectionData.videoUrl = video.url;
+    }
+
+    const updatedSubSection = await SubSection.findByIdAndUpdate(subSectionId, updatedSubSectionData,{new: true});
     return res.status(200).json({
       success: true,
       message: "SubSection updated successfully",

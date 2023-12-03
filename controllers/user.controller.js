@@ -5,6 +5,7 @@ import ApiError from "../utils/ApiError.js";
 import otpGenerator from "otp-generator";
 import mailSender from "../utils/mailSender.js";
 import clearCookie from "../utils/clearCookie.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const cookieOption = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -30,6 +31,9 @@ const signUp = async (req, res, next) => {
       contactNumber: null,
       about: null
     })
+    const imgLocalPath = req.file.path
+    const img = await uploadOnCloudinary(imgLocalPath)
+    
     const user = await User.create({
       firstName,
       lastName,
@@ -38,7 +42,7 @@ const signUp = async (req, res, next) => {
       accountType,
       additionalDetails: profile,
       approve: false,
-      image: "https://github.com/avinasharex/auth/blob/main/model/userSchema.js"
+      image: img.url ? img.url : "https://github.com/avinasharex/auth/blob/main/model/userSchema.js"
     });
   
     await user.save()
